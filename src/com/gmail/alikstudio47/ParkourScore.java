@@ -2,39 +2,41 @@ package com.gmail.alikstudio47;
 
 import java.io.Serializable;
 
-public class ParkourScore implements Serializable{
+public class ParkourScore implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private float time;
-	
+
 	private String playerName;
 
 	private int timesPlayed = 0;
-	public ParkourScore(String playerName, float time)
-	{
+
+	public ParkourScore( String playerName, float time ) {
 		this.playerName = playerName;
 		this.time = time;
-		
+
 	}
-	public String getPlayerName() {
+
+	public String getPlayerName ( ) {
 		return playerName;
 	}
 
-	public void setPlayerName(String playerName) {
+	public void setPlayerName ( String playerName ) {
 		this.playerName = playerName;
 	}
 
-	public float getTime() {
+	public float getTime ( ) {
 		return time;
 	}
 
-	public void setTime(float time) {
+	public void setTime ( float time ) {
 		this.time = time;
 	}
 
-	public int getTimesPlayed() {
+	public int getTimesPlayed ( ) {
 		return timesPlayed;
 	}
 
-	public void setTimesPlayed(int timesPlayed) {
+	public void setTimesPlayed ( int timesPlayed ) {
 		this.timesPlayed = timesPlayed;
 	}
 }
