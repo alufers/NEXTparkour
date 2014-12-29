@@ -76,7 +76,7 @@ public class ParkourArena implements Serializable {
 			return;
 		}
 		if (players.contains(player)) {
-			player.sendMessage(ChatColor.RED + "Ju� grasz na tej mapie!");
+			player.sendMessage(ChatColor.RED + "Juz grasz na tej mapie!");
 		} else {
 			ParkourPlayer tmp = new ParkourPlayer();
 			tmp.setPlayer(player);
