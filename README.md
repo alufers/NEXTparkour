@@ -1,6 +1,5 @@
 NEXTparkour
 ===========
 
-Parkour plugin for minecraft
-
-Specjalnie dla MINEWORK
+Parkour plugin for minecraft.
+Plugin dedicated to minework.fhmc.pl (minework.pl)
