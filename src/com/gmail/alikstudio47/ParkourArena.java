@@ -1,20 +1,23 @@
 package com.gmail.alikstudio47;
 
+import static org.bukkit.ChatColor.AQUA;
+import static org.bukkit.ChatColor.BLUE;
+import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.YELLOW;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class ParkourArena implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8900730653450176545L;
+	private static final long serialVersionUID = 1L;
 	private transient List< ParkourPlayer > players = new ArrayList< ParkourPlayer >( );
 	private transient NEXTparkour plugin;
 	private boolean isActive;
@@ -50,12 +53,10 @@ public class ParkourArena implements Serializable {
 	}
 
 	public ParkourArena( NEXTparkour plugin ) {
-
 		this.plugin = plugin;
 	}
 
 	public void setPlugin ( NEXTparkour plugin ) {
-
 		this.plugin = plugin;
 	}
 
@@ -71,50 +72,37 @@ public class ParkourArena implements Serializable {
 
 	public void addPlayer ( Player player ) {
 		if ( !isActive( ) ) {
-			player.sendMessage( ChatColor.RED
-					+ "Mapa nieaktywna lub w budowie!" );
+			player.sendMessage( RED + "Mapa nieaktywna lub w budowie!" );
 			return;
 		}
-		if ( players.contains( player ) ) {
-			player.sendMessage( ChatColor.RED + "Juz grasz na tej mapie!" );
-		} else {
+		if ( players.contains( player ) )
+			player.sendMessage( RED + "Juz grasz na tej mapie!" );
+		else {
 			ParkourPlayer tmp = new ParkourPlayer( );
 			tmp.setPlayer( player );
 			tmp.setStartTime( System.currentTimeMillis( ) );
 			players.add( tmp );
-			player.sendMessage( ChatColor.BLUE + "Witaj na mapie " + getName( ) );
-			if ( getPlayersScore( player.getPlayerListName( ) ) != null ) {
-				player.sendMessage( ChatColor.GREEN
-						+ "Grasz juz tutaj po raz "
-						+ getPlayersScore( player.getPlayerListName( ) )
-								.getTimesPlayed( )
-						+ ",a twoj najlepszy czas to "
-						+ getPlayersScore( player.getPlayerListName( ) )
-								.getTime( ) + "." );
+			player.sendMessage( BLUE + "Witaj na mapie " + getName( ) );
+			if ( getScoreOf( player ) != null ) {
+				player.sendMessage( GREEN + "Grasz juz "
+						+ getScoreOf( player ).timesPlayed + " raz "
+						+ ", a twoj najlepszy czas to "
+						+ getScoreOf( player ).time + "." );
 			} else {
-
-				player.sendMessage( ChatColor.BLUE
+				player.sendMessage( BLUE
 						+ "Jeszcze nigdy nie doszedles do konca tej mapy. Powodzenia." );
 			}
+
 			player.teleport( getSpawnLocation( ) );
 		}
 
 	}
 
 	public void removePlayer ( Player player ) {
+		players.remove( player );
 
-		for ( int i = 0; i < players.size( ); i++ ) {
-
-			if ( players.get( i ).getPlayer( ).equals( player ) ) {
-
-				players.remove( i );
-			}
-
-		}
-		player.sendMessage( ChatColor.BLUE + "Dzi�ki za granie na "
-				+ getName( ) );
+		player.sendMessage( BLUE + "Dzi�ki za granie na " + getName( ) );
 		player.teleport( plugin.getLobbySpawnLocation( ) );
-
 	}
 
 	public Boolean containsPlayer ( Player player ) {
@@ -130,52 +118,47 @@ public class ParkourArena implements Serializable {
 		return false;
 	}
 
-	public ParkourScore getPlayersScore ( String playerName ) {
-		for ( int i = 0; i < scores.size( ); i++ ) {
+	/*
+	 * @Deprecated public ParkourScore getPlayersScore ( String
+	 * playerName ) { for ( int i = 0; i < scores.size( ); i++ ) { if
+	 * ( scores.get( i ).getPlayerName( ).equals( playerName ) ) {
+	 * return scores.get( i ); } } return null; }
+	 */
 
-			if ( scores.get( i ).getPlayerName( ).equals( playerName ) ) {
-				return scores.get( i );
-			}
-		}
-		return null;
-
+	public ParkourScore getScoreOf ( Player player ) {
+		return scores.get( scores.indexOf( player ) );
 	}
 
-	public void endReached ( Player player ) {
+	public void endReached ( Player _player ) {
+		ParkourPlayer player = players.get( players.indexOf( _player ) );
 
-		for ( int i = 0; i < players.size( ); i++ ) {
+		if ( player != null ) {
+			_player.sendMessage( GOLD + "Dzieki za granie na " + getName( ) );
 
-			if ( players.get( i ).getPlayer( ).equals( player ) ) {
-				player.sendMessage( ChatColor.GOLD + "Dzieki za granie na "
-						+ getName( ) );
-				float time = (float) ( System.currentTimeMillis( ) - players
-						.get( i ).getStartTime( ) ) / 1000;
-				if ( getPlayersScore( player.getPlayerListName( ) ) != null ) {
-					getPlayersScore( player.getPlayerListName( ) ).setTime(
-							time );
-					getPlayersScore( player.getPlayerListName( ) )
-							.setTimesPlayed(
-									getPlayersScore( player.getPlayerListName( ) )
-											.getTimesPlayed( ) + 1 );
-				} else {
-					scores.add( new ParkourScore( player.getPlayerListName( ),
-							time ) );
-				}
-				player.sendMessage( ChatColor.YELLOW + "Twoj czas: " + time );
-				players.remove( i );
+			float time = (float) ( ( System.currentTimeMillis( ) - player
+					.getStartTime( ) ) / 1000 );
 
-				player.teleport( plugin.getLobbySpawnLocation( ) );
+			if ( getScoreOf( _player ) != null ) {
+				getScoreOf( _player ).time = time;
+				getScoreOf( _player ).timesPlayed += 1;
+			} else {
+				scores.add( new ParkourScore( _player.getPlayerListName( ),
+						time ) );
 			}
 
+			_player.sendMessage( YELLOW + "Twoj czas: " + time );
+
+			//players.remove( _player );
+
+			_player.teleport( plugin.getLobbySpawnLocation( ) );
 		}
+
 	}
 
 	public void registerCheckpoint ( Player player ) {
 		for ( int i = 0; i < players.size( ); i++ ) {
-
 			if ( players.get( i ).getPlayer( ).equals( player ) ) {
-
-				player.sendMessage( ChatColor.AQUA + "Zdobyles checkpoint!" );
+				player.sendMessage( AQUA + "Zdobyles checkpoint!" );
 				// players.get(i).setLastCheckpoint(
 				// new ParkourCheckpoint(player.getLocation()));
 

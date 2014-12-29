@@ -542,7 +542,7 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 				pairs.getValue( ).setPlugin( this );
 				arenas.add( (ParkourArena) pairs.getValue( ) );
 
-				it.remove( ); // avoids a ConcurrentModificationException
+				it.remove( );
 			}
 		} catch ( ClassNotFoundException e ) {
 			e.printStackTrace( );
