@@ -83,6 +83,14 @@ public class ParkourArena implements Serializable {
 			tmp.setStartTime(System.currentTimeMillis());
 			players.add(tmp);
 			player.sendMessage(ChatColor.BLUE + "Witaj na mapie " + getName());
+			if (getPlayersScore(player.getPlayerListName()) != null) {
+				player.sendMessage(ChatColor.GREEN + "Grasz juz tutaj po raz " + getPlayersScore(player.getPlayerListName()).getTimesPlayed() + ",a twoj najlepszy czas to " +getPlayersScore(player.getPlayerListName()).getTime() + "." );
+			}
+			else
+			{
+				
+				player.sendMessage(ChatColor.BLUE + "Jeszcze nigdy nie doszedles do konca tej mapy. Powodzenia.");
+			}
 			player.teleport(getSpawnLocation());
 		}
 
