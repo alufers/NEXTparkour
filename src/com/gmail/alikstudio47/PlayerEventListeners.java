@@ -1,9 +1,7 @@
 package com.gmail.alikstudio47;
 
-import static org.bukkit.Material.DIAMOND_BLOCK;
 import static org.bukkit.Material.EMERALD;
 import static org.bukkit.Material.EMERALD_BLOCK;
-import static org.bukkit.Material.GOLD_BLOCK;
 import static org.bukkit.event.block.Action.RIGHT_CLICK_AIR;
 import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
 
@@ -46,17 +44,24 @@ public class PlayerEventListeners implements Listener {
 	@EventHandler
 	public void onPlayerMoveEvent ( PlayerMoveEvent event ) {
 		Player player = event.getPlayer( );
-		Material mat = player.getLocation( ).getBlock( )
+		Material mat = event.getPlayer( ).getLocation( ).getBlock( )
 				.getRelative( BlockFace.DOWN ).getType( );
 
-		if ( mat == DIAMOND_BLOCK || mat == GOLD_BLOCK ) {
+		if ( mat == Material.DIAMOND_BLOCK || mat == Material.GOLD_BLOCK ) {
+			player.sendMessage( "Pizza!" );
 			ParkourArena tmp = plugin.findPlayer( player );
 
-			if ( tmp != null )
-				if ( mat == DIAMOND_BLOCK )
+			if ( tmp != null ) {
+				player.sendMessage( "Wyciagam portfel" );
+
+				if ( mat == Material.DIAMOND_BLOCK ) {
 					tmp.endReached( player );
-				else if ( mat == GOLD_BLOCK )
+					player.sendMessage( "Mam kase!" );
+				} else if ( mat == Material.GOLD_BLOCK ) {
 					tmp.registerCheckpoint( player );
+					player.sendMessage( "Zbieram hajs z jutuba ! :c" );
+				}
+			}
 		}
 	}
 }

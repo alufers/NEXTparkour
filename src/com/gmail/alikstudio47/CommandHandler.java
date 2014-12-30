@@ -79,9 +79,17 @@ public class CommandHandler {
 				|| cmd.getName( ).equalsIgnoreCase( "nparkouradmin" )
 				|| cmd.getName( ).equalsIgnoreCase( "npa" ) ) {
 
-			if ( !( sender instanceof Player ) )
+			if ( !( sender instanceof Player ) ) {
 				sender.sendMessage( RED
 						+ "Ta komenda musi byc wykonana przez gracza." );
+				return true;
+			}
+
+			if ( args.length <= 0 ) {
+				plugin.showAdminHelp( sender );
+				return true;
+			}
+
 			else {
 				Player player = (Player) sender;
 
@@ -154,6 +162,6 @@ public class CommandHandler {
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 }
