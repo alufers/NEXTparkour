@@ -16,7 +16,9 @@
     <target name="jar">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/NextParkour.jar" basedir="build/classes">
-           
+        	 <fileset dir="${basedir}">
+        	     <include name="plugin.yml"/>
+        	 </fileset>
         </jar>
     </target>
 
