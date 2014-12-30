@@ -134,9 +134,22 @@ public class ParkourArena implements Serializable {
 	public void endReached ( Player player ) {
 		endReached( player.getPlayerListName( ) );
 	}
-
+	public ParkourPlayer getPkPlayerByName(String name)
+	{
+		for(int i = 0; i < players.size(); i++)
+		{
+			if(players.get(i).player.getPlayerListName() == name)
+			{
+				return players.get(i);
+				
+			}
+		}
+		return null;
+		
+		
+	}
 	public void endReached ( String _player ) {
-		ParkourPlayer player = players.get( players.indexOf( _player ) );
+		ParkourPlayer player = getPkPlayerByName(_player);
 
 		if ( player != null ) {
 			player.player.sendMessage( GOLD + "Dzieki za granie na "
