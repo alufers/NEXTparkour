@@ -86,7 +86,7 @@ public class CommandHandler {
 			}
 
 			if ( args.length <= 0 ) {
-				plugin.showHelp( sender );
+				plugin.showAdminHelp( sender );
 				return true;
 			}
 
