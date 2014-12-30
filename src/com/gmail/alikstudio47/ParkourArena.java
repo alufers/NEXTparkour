@@ -2,10 +2,13 @@ package com.gmail.alikstudio47;
 
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.BLUE;
+import static org.bukkit.ChatColor.BOLD;
+import static org.bukkit.ChatColor.DARK_GREEN;
 import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
-import static org.bukkit.ChatColor.YELLOW;
+import static org.bukkit.ChatColor.WHITE;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -107,12 +110,10 @@ public class ParkourArena implements Serializable {
 	}
 
 	public Boolean containsPlayer ( Player player ) {
-		for(int i = 0; i < players.size(); i++)
-		{
-			if(players.get(i).player == player)
-			{
+		for ( int i = 0; i < players.size( ); i++ ) {
+			if ( players.get( i ).player == player ) {
 				return true;
-				
+
 			}
 		}
 		return false;
@@ -131,25 +132,21 @@ public class ParkourArena implements Serializable {
 		return null;
 	}
 
-	public void endReached ( Player player ) {
-		endReached( player.getPlayerListName( ) );
-	}
-	public ParkourPlayer getPkPlayerByName(String name)
-	{
-		for(int i = 0; i < players.size(); i++)
-		{
-			if(players.get(i).player.getPlayerListName() == name)
-			{
-				return players.get(i);
-				
+	public ParkourPlayer getPkPlayerByName ( String name ) {
+		for ( int i = 0; i < players.size( ); i++ ) {
+			if ( players.get( i ).player.getPlayerListName( ) == name ) {
+				return players.get( i );
 			}
 		}
 		return null;
-		
-		
 	}
+
+	public void endReached ( Player player ) {
+		endReached( player.getPlayerListName( ) );
+	}
+
 	public void endReached ( String _player ) {
-		ParkourPlayer player = getPkPlayerByName(_player);
+		ParkourPlayer player = getPkPlayerByName( _player );
 
 		if ( player != null ) {
 			player.player.sendMessage( GOLD + "Dzieki za granie na "
@@ -164,7 +161,7 @@ public class ParkourArena implements Serializable {
 				scores.add( new ParkourScore( _player, time ) );
 			}
 
-			player.player.sendMessage( YELLOW + "Twoj czas: " + time );
+			player.player.sendMessage( niceEndMsg( getScoreOf( _player ) ) );
 
 			players.remove( player ); // gracz musi byc usuniety bo bugi :D
 
@@ -185,4 +182,12 @@ public class ParkourArena implements Serializable {
 
 	}
 
+	private String niceEndMsg ( ParkourScore score ) {
+		String time = ( ( score.time * 1000 ) + "" ).replace( ".0", "" );
+		String s = time.substring( 0, time.length( ) - 3 );
+		String ms = time.substring( time.length( ) - 3 );
+
+		return GOLD + "»   " + GRAY + "Parkour " + DARK_GREEN + BOLD + name
+				+ GRAY + " ukonczony z czasem: " + WHITE + s + "s " + ms + "ms";
+	}
 }
