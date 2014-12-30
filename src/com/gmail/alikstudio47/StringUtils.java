@@ -25,16 +25,16 @@ public class StringUtils {
 		return costs[ b.length( ) ];
 	}
 
-	public static String findClosestString ( String given, String[] avalible ) {
+	public static String findClosestString ( String given, String[] available ) {
 		String best = "";
 		int min = 0;
 
-		for ( int i = 0; i < avalible.length; i++ ) {
-			if ( min == 0 || StringUtils.distance( given, avalible[ i ] ) < min ) {
-				min = StringUtils.distance( given, avalible[ i ] );
-				best = avalible[ i ];
+		for ( String curr : available ) {
+			int dist = StringUtils.distance( given, curr );
+			if ( min == 0 || dist < min ) {
+				min = dist;
+				best = curr;
 			}
-
 		}
 
 		return best;

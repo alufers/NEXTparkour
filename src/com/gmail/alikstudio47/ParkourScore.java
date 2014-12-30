@@ -14,7 +14,7 @@ public class ParkourScore implements Serializable {
 
 	}
 
-	// Po co robil gettery i settery skoro nie maja zadnych mechanizmow ? (np. System.out.println(playerName);)
+	// Po co robiles gettery i settery skoro nie maja zadnych mechanizmow ? (np. System.out.println(playerName);)
 
 	/*
 	 * public String getPlayerName ( ) { return playerName; } public
