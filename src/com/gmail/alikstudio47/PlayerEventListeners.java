@@ -48,7 +48,6 @@ public class PlayerEventListeners implements Listener {
 				.getRelative( BlockFace.DOWN ).getType( );
 
 		if ( mat == Material.DIAMOND_BLOCK || mat == Material.GOLD_BLOCK ) {
-			player.sendMessage( "Pizza!" );
 			ParkourArena tmp = plugin.findPlayer( player );
 
 			if ( tmp != null ) {
@@ -59,7 +58,6 @@ public class PlayerEventListeners implements Listener {
 					player.sendMessage( "Mam kase!" );
 				} else if ( mat == Material.GOLD_BLOCK ) {
 					tmp.registerCheckpoint( player );
-					player.sendMessage( "Zbieram hajs z jutuba ! :c" );
 				}
 			}
 		}
