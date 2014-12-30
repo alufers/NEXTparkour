@@ -6,7 +6,7 @@ before_script: chmod a+x build.sh
 script: "./build.sh"
 deploy:
   provider: releases
-  api-key: "97:ca:4a:1f:b2:43:8d:ea:69:96:c6:12:6d:57:97:20"
+  api-key: "640acc30a639177e049de8b56f355e734ca83c66"
   file: "./build/jar/NextParkour.jar"
   skip_cleanup: true
   on:
