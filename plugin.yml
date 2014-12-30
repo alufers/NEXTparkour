@@ -6,11 +6,7 @@ commands:
       description: Uruchamia plugin NEXTparkour
       aliases: [np, nparkour]
       usage: /np
-      permission: np.use
-      permission-message: Nie masz uprawnien. Serio1.
    nextparkouradmin:
       description: Uruchamia administracje pluginu NEXTparkour
       aliases: [npa, nparkouradmin]
       usage: /npa
-      permission: np.admin
-      permission-message: Nie masz uprawnien. Serio.
