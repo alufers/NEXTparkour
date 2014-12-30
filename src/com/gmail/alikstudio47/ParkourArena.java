@@ -148,7 +148,7 @@ public class ParkourArena implements Serializable {
 
 			_player.sendMessage( YELLOW + "Twoj czas: " + time );
 
-			//players.remove( _player );
+			players.remove( player ); // gracz musi byc usuniety bo bugi :D
 
 			_player.teleport( plugin.getLobbySpawnLocation( ) );
 		}
