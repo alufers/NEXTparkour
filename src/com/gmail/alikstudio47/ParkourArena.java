@@ -79,10 +79,11 @@ public class ParkourArena implements Serializable {
 			player.sendMessage( RED + "Juz grasz na tej mapie!" );
 		else {
 			ParkourPlayer tmp = new ParkourPlayer( );
-			tmp.setPlayer( player );
-			tmp.setStartTime( System.currentTimeMillis( ) );
+			tmp.player = player;
+			tmp.startTime = System.currentTimeMillis( );
 			players.add( tmp );
 			player.sendMessage( BLUE + "Witaj na mapie " + getName( ) );
+
 			if ( getScoreOf( player ) != null ) {
 				player.sendMessage( GREEN + "Grasz juz "
 						+ getScoreOf( player ).timesPlayed + " raz "
@@ -109,12 +110,9 @@ public class ParkourArena implements Serializable {
 		return getScoreOf( player ) == null ? false : true;
 	}
 
-	/*
-	 * @Deprecated public ParkourScore getPlayersScore ( String
-	 * playerName ) { for ( int i = 0; i < scores.size( ); i++ ) { if
-	 * ( scores.get( i ).getPlayerName( ).equals( playerName ) ) {
-	 * return scores.get( i ); } } return null; }
-	 */
+	public ParkourScore getScoreOf ( Player player ) {
+		return getScoreOf( player.getPlayerListName( ) );
+	}
 
 	public ParkourScore getScoreOf ( String player ) {
 		for ( ParkourScore s : scores ) {
@@ -125,10 +123,6 @@ public class ParkourArena implements Serializable {
 		return null;
 	}
 
-	public ParkourScore getScoreOf ( Player player ) {
-		return getScoreOf( player.getPlayerListName( ) );
-	}
-
 	public void endReached ( Player player ) {
 		endReached( player.getPlayerListName( ) );
 	}
@@ -137,11 +131,10 @@ public class ParkourArena implements Serializable {
 		ParkourPlayer player = players.get( players.indexOf( _player ) );
 
 		if ( player != null ) {
-			player.getPlayer( ).sendMessage(
-					GOLD + "Dzieki za granie na " + getName( ) );
+			player.player.sendMessage( GOLD + "Dzieki za granie na "
+					+ getName( ) );
 
-			float time = (float) ( ( System.currentTimeMillis( ) - player
-					.getStartTime( ) ) / 1000 );
+			float time = (float) ( ( System.currentTimeMillis( ) - player.startTime ) / 1000 );
 
 			if ( getScoreOf( _player ) != null ) {
 				getScoreOf( _player ).time = time;
@@ -150,18 +143,18 @@ public class ParkourArena implements Serializable {
 				scores.add( new ParkourScore( _player, time ) );
 			}
 
-			player.getPlayer( ).sendMessage( YELLOW + "Twoj czas: " + time );
+			player.player.sendMessage( YELLOW + "Twoj czas: " + time );
 
 			players.remove( player ); // gracz musi byc usuniety bo bugi :D
 
-			player.getPlayer( ).teleport( plugin.getLobbySpawnLocation( ) );
+			player.player.teleport( plugin.getLobbySpawnLocation( ) );
 		}
 
 	}
 
 	public void registerCheckpoint ( Player player ) {
 		for ( int i = 0; i < players.size( ); i++ ) {
-			if ( players.get( i ).getPlayer( ).equals( player ) ) {
+			if ( players.get( i ).player.equals( player ) ) {
 				player.sendMessage( AQUA + "Zdobyles checkpoint!" );
 				// players.get(i).setLastCheckpoint(
 				// new ParkourCheckpoint(player.getLocation()));

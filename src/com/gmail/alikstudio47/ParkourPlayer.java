@@ -3,28 +3,28 @@ package com.gmail.alikstudio47;
 import org.bukkit.entity.Player;
 
 public class ParkourPlayer {
-	private Player player;
 	// private ParkourCheckpoint lastCheckpoint = null;
-	private int Deaths = 0;
-	private long startTime;
-
 	// private int checkpointsFound = 0;
 
-	public long getStartTime ( ) {
-		return startTime;
-	}
+	public Player player;
+	public long startTime;
+	public int deaths = 0;
 
-	public void setStartTime ( long startTime ) {
-		this.startTime = startTime;
-	}
+	//public long getStartTime ( ) {
+	//	return startTime;
+	//}
 
-	public Player getPlayer ( ) {
-		return player;
-	}
+	//public void setStartTime ( long startTime ) {
+	//	this.startTime = startTime;
+	//}
 
-	public void setPlayer ( Player player ) {
-		this.player = player;
-	}
+	//public Player getPlayer ( ) {
+	//	return player;
+	//}
+
+	//public void setPlayer ( Player player ) {
+	//	this.player = player;
+	//}
 
 	// public ParkourCheckpoint getLastCheckpoint() {
 	// return lastCheckpoint;
@@ -34,13 +34,13 @@ public class ParkourPlayer {
 	// this.lastCheckpoint = lastCheckpoint;
 	// }
 
-	public int getDeaths ( ) {
-		return Deaths;
-	}
+	//public int getDeaths ( ) {
+	//	return deaths;
+	//}
 
-	public void setDeaths ( int deaths ) {
-		Deaths = deaths;
-	}
+	//public void setDeaths ( int deaths ) {
+	//	this.deaths = deaths;
+	//}
 
 	/*
 	 * public int getCheckpointsFound() { return checkpointsFound; }

@@ -135,15 +135,13 @@ public class CommandHandler {
 											+ BOLD
 											+ plugin.findClosestArenaName( "name" )
 											+ GREEN + "?" );
-							} else {
+							} else
 								sender.sendMessage( RED + "Wartosc musi byc "
 										+ GREEN + "true" + RED + " lub "
 										+ GREEN + "false" );
-							}
-						} else {
+						} else
 							sender.sendMessage( RED
 									+ "Niewlasciwa ilosc parametrow." );
-						}
 					} else {
 						plugin.showAdminHelp( sender );
 						return true;
@@ -151,7 +149,6 @@ public class CommandHandler {
 				}
 			}
 		}
-
 		return false;
 	}
 }

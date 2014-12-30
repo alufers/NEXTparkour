@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -45,7 +44,7 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 		playerListener = new PlayerEventListeners( this );
 		getServer( ).getPluginManager( ).registerEvents( playerListener, this );
 		loadConfiguration( );
-		getLogger( ).info( "Loading arenas!" );
+		getLogger( ).info( "Loading arenas ..." );
 		loadArenas( );
 	}
 
@@ -78,20 +77,19 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 
 	public String findClosestArenaName ( String invalid ) {
 		String[] names = new String[ arenas.size( ) ];
+
 		for ( int i = 0; i < arenas.size( ); i++ ) {
 			names[ i ] = arenas.get( i ).getName( );
 		}
 
-		return StringUtils.findClosestString( "invalid", names );
+		return StringUtils.findClosestString( invalid, names );
 	}
 
 	public void createArena ( Player player, String name ) {
 
-		if ( findArena( name ) != null ) {
+		if ( findArena( name ) != null )
 			player.sendMessage( RED + "Arena o tej nazwie juz istnieje" );
-		} else {
-			//PrintWriter writer = null;
-
+		else {
 			ParkourArena arenaToCreate = new ParkourArena( this );
 			arenaToCreate.setSpawnLocation( player.getLocation( ) );
 			arenaToCreate.setName( name );
@@ -100,7 +98,6 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 			player.sendMessage( GREEN
 					+ "Utworzono arene. Aby ja aktywowac nalezy wpisac: "
 					+ DARK_GREEN + "/npa setactive " + name + " true" );
-
 		}
 
 	}
@@ -179,12 +176,8 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 
 	public ParkourArena findPlayer ( Player player ) {
 		for ( int i = 0; i < arenas.size( ); i++ ) {
-
-			if ( arenas.get( i ).containsPlayer( player ) ) {
-
+			if ( arenas.get( i ).containsPlayer( player ) )
 				return arenas.get( i );
-			}
-
 		}
 		return null;
 	}
@@ -197,85 +190,89 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 
 		getConfig( ).options( ).copyDefaults( true );
 		saveConfig( );
-
 	}
 
 	public Location getLobbySpawnLocation ( ) {
 		World w = Bukkit.getServer( ).getWorld(
 				getConfig( ).getString( "config.lobbySpawnLocation.world" ) );
-		Location loc = new Location( w, getConfig( ).getInt(
-				"config.lobbySpawnLocation.x" ), getConfig( ).getInt(
-				"config.lobbySpawnLocation.y" ), getConfig( ).getInt(
+		Location loc = new Location( w, getConfig( ).getDouble(
+				"config.lobbySpawnLocation.x" ), getConfig( ).getDouble(
+				"config.lobbySpawnLocation.y" ), getConfig( ).getDouble(
 				"config.lobbySpawnLocation.z" ) );
 
 		return loc;
 	}
 
 	public void showHelp ( CommandSender player ) {
-		player.sendMessage( ChatColor.DARK_AQUA + "===" + ChatColor.AQUA
-				+ "NEXTparkour" + ChatColor.GRAY + " by " + ChatColor.AQUA
-				+ "alufers " + ChatColor.GOLD + getDescription( ).getVersion( )
-				+ ChatColor.DARK_AQUA + "===" );
-		player.sendMessage( ChatColor.DARK_GREEN + "/np join [nazwaAreny] "
-				+ ChatColor.GREEN + "Wchodzisz na arene" );
-		player.sendMessage( ChatColor.DARK_GREEN + "/np leave             "
-				+ ChatColor.GREEN + "Opuszczasz arene" );
-		player.sendMessage( ChatColor.DARK_GREEN + "/np list              "
-				+ ChatColor.GREEN + "Pokazujesz dostepne areny" );
+		player.sendMessage( DARK_AQUA + "===" + AQUA + "NEXTparkour" + GRAY
+				+ " by " + AQUA + "alufers " + GOLD
+				+ getDescription( ).getVersion( ) + DARK_AQUA + "===" );
+		player.sendMessage( DARK_GREEN + "/np join [nazwaAreny] " + GREEN
+				+ "Wchodzisz na arene" );
+		player.sendMessage( DARK_GREEN + "/np leave             " + GREEN
+				+ "Opuszczasz arene" );
+		player.sendMessage( DARK_GREEN + "/np list              " + GREEN
+				+ "Pokazujesz dostepne areny" );
 
 	}
 
 	public void showAdminHelp ( CommandSender player ) {
-		player.sendMessage( ChatColor.DARK_AQUA + "===" + ChatColor.AQUA
-				+ "NEXTparkour" + ChatColor.GRAY + " by " + ChatColor.AQUA
-				+ "alufers " + ChatColor.GOLD + getDescription( ).getVersion( )
-				+ ChatColor.YELLOW + "[MODU� ADMINISTRACYJNY]"
-				+ ChatColor.DARK_AQUA + "===" );
-		player.sendMessage( ChatColor.DARK_GREEN + "/npa create [nazwaAreny] "
-				+ ChatColor.GREEN + "Tworzysz aren�" );
-		player.sendMessage( ChatColor.DARK_GREEN + "/npa delete [nazwaAreny] "
-				+ ChatColor.GREEN + "Usuwasz aren�" );
-		player.sendMessage( ChatColor.DARK_GREEN
+		player.sendMessage( DARK_AQUA + "===" + AQUA + "NEXTparkour" + GRAY
+				+ " by " + AQUA + "alufers " + GOLD
+				+ getDescription( ).getVersion( ) + YELLOW
+				+ "[MODUL ADMINISTRACYJNY]" + DARK_AQUA + "===" );
+		player.sendMessage( DARK_GREEN + "/npa create [nazwaAreny] " + GREEN
+				+ "Tworzysz arene" );
+		player.sendMessage( DARK_GREEN + "/npa delete [nazwaAreny] " + GREEN
+				+ "Usuwasz arene" );
+		player.sendMessage( DARK_GREEN
 				+ "/npa kick <nazwaAreny>                                   "
-				+ ChatColor.GREEN
+				+ GREEN
 				+ "Wyrzucasz wszystkich graczy. Niepodanie argumentu powoduje wyrzucenie z wszystkich aren." );
-		player.sendMessage( ChatColor.DARK_GREEN
+		player.sendMessage( DARK_GREEN
 				+ "/npa setlobby                                            "
-				+ ChatColor.GREEN + "Ustawia lobby w miejscu, w kt�rym stoisz." );
-		player.sendMessage( ChatColor.DARK_GREEN
+				+ GREEN + "Ustawia lobby w miejscu, w ktorym stoisz." );
+		player.sendMessage( DARK_GREEN
 				+ "/npa setactive <nazwaAreny> <true|false>                                            "
-				+ ChatColor.GREEN + "Ustawia lobby w miejscu, w kt�rym stoisz." );
+				+ GREEN + "Ustawia lobby w miejscu, w ktorym stoisz." );
 
 	}
 
 	public void loadArenas ( ) {
-
 		File f = new File( "arenas.dat" );
 		if ( !f.exists( ) )
 			saveArenas( );
 
 		FileInputStream fin = null;
+
 		try {
 			fin = new FileInputStream( "arenas.dat" );
 		} catch ( FileNotFoundException e ) {
 			e.printStackTrace( );
 		}
+
 		ObjectInputStream ois = null;
+
 		try {
 			ois = new ObjectInputStream( fin );
 		} catch ( IOException e ) {
 			e.printStackTrace( );
 		}
+
 		try {
 			@SuppressWarnings ( "unchecked" )
 			HashMap< Integer, ParkourArena > hm = (HashMap< Integer, ParkourArena >) ois
 					.readObject( );
+
 			arenas = new ArrayList< ParkourArena >( );
+
 			Iterator< Entry< Integer, ParkourArena >> it = hm.entrySet( )
 					.iterator( );
+
 			while ( it.hasNext( ) ) {
 				Map.Entry< Integer, ParkourArena > pairs = (Map.Entry< Integer, ParkourArena >) it
 						.next( );
+
 				pairs.getValue( ).resetPlayers( );
 				pairs.getValue( ).setPlugin( this );
 				arenas.add( (ParkourArena) pairs.getValue( ) );
@@ -287,6 +284,7 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 		} catch ( IOException e ) {
 			e.printStackTrace( );
 		}
+
 		try {
 			fin.close( );
 		} catch ( IOException e ) {
@@ -297,6 +295,7 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 	public void saveArenas ( ) {
 		getLogger( ).info( "Saving arenas! " + arenas.size( ) );
 		HashMap< Integer, ParkourArena > hm = new HashMap< Integer, ParkourArena >( );
+
 		for ( int i = 0; i < arenas.size( ); i++ ) {
 			hm.put( i, arenas.get( i ) );
 		}
