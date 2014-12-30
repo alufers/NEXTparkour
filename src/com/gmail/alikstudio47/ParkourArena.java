@@ -95,7 +95,7 @@ public class ParkourArena implements Serializable {
 		}
 
 	}
-
+	/*
 	public void removePlayer(Player player) {
 
 		for (int i = 0; i < players.size(); i++) {
@@ -106,10 +106,10 @@ public class ParkourArena implements Serializable {
 			}
 
 		}
-		player.sendMessage(ChatColor.BLUE + "Dzi�ki za granie na " + getName());
+		player.sendMessage(ChatColor.BLUE + "Dzieki za granie na " + getName());
 		player.teleport(plugin.getLobbySpawnLocation());
 
-	}
+	}*/
 
 	public Boolean containsPlayer(Player player) {
 
