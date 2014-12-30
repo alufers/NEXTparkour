@@ -107,7 +107,15 @@ public class ParkourArena implements Serializable {
 	}
 
 	public Boolean containsPlayer ( Player player ) {
-		return getScoreOf( player ) == null ? false : true;
+		for(int i = 0; i < players.size(); i++)
+		{
+			if(players.get(i).player == player)
+			{
+				return true;
+				
+			}
+		}
+		return false;
 	}
 
 	public ParkourScore getScoreOf ( Player player ) {
