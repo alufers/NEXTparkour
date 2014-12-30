@@ -101,21 +101,12 @@ public class ParkourArena implements Serializable {
 	public void removePlayer ( Player player ) {
 		players.remove( player );
 
-		player.sendMessage( BLUE + "Dzi�ki za granie na " + getName( ) );
+		player.sendMessage( BLUE + "Dzieki za granie na " + getName( ) );
 		player.teleport( plugin.getLobbySpawnLocation( ) );
 	}
 
 	public Boolean containsPlayer ( Player player ) {
-
-		for ( int i = 0; i < players.size( ); i++ ) {
-
-			if ( players.get( i ).getPlayer( ).equals( player ) ) {
-
-				return true;
-			}
-
-		}
-		return false;
+		return getScoreOf( player ) == null ? false : true;
 	}
 
 	/*
@@ -125,15 +116,29 @@ public class ParkourArena implements Serializable {
 	 * return scores.get( i ); } } return null; }
 	 */
 
-	public ParkourScore getScoreOf ( Player player ) {
-		return scores.get( scores.indexOf( player ) );
+	public ParkourScore getScoreOf ( String player ) {
+		for ( ParkourScore s : scores ) {
+			if ( s.playerName.equalsIgnoreCase( player ) )
+				return s;
+		}
+
+		return null;
 	}
 
-	public void endReached ( Player _player ) {
+	public ParkourScore getScoreOf ( Player player ) {
+		return getScoreOf( player.getPlayerListName( ) );
+	}
+
+	public void endReached ( Player player ) {
+		endReached( player.getPlayerListName( ) );
+	}
+
+	public void endReached ( String _player ) {
 		ParkourPlayer player = players.get( players.indexOf( _player ) );
 
 		if ( player != null ) {
-			_player.sendMessage( GOLD + "Dzieki za granie na " + getName( ) );
+			player.getPlayer( ).sendMessage(
+					GOLD + "Dzieki za granie na " + getName( ) );
 
 			float time = (float) ( ( System.currentTimeMillis( ) - player
 					.getStartTime( ) ) / 1000 );
@@ -142,15 +147,14 @@ public class ParkourArena implements Serializable {
 				getScoreOf( _player ).time = time;
 				getScoreOf( _player ).timesPlayed += 1;
 			} else {
-				scores.add( new ParkourScore( _player.getPlayerListName( ),
-						time ) );
+				scores.add( new ParkourScore( _player, time ) );
 			}
 
-			_player.sendMessage( YELLOW + "Twoj czas: " + time );
+			player.getPlayer( ).sendMessage( YELLOW + "Twoj czas: " + time );
 
 			players.remove( player ); // gracz musi byc usuniety bo bugi :D
 
-			_player.teleport( plugin.getLobbySpawnLocation( ) );
+			player.getPlayer( ).teleport( plugin.getLobbySpawnLocation( ) );
 		}
 
 	}
@@ -161,7 +165,6 @@ public class ParkourArena implements Serializable {
 				player.sendMessage( AQUA + "Zdobyles checkpoint!" );
 				// players.get(i).setLastCheckpoint(
 				// new ParkourCheckpoint(player.getLocation()));
-
 			}
 
 		}

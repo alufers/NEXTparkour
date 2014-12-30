@@ -10,19 +10,19 @@ public class ParkourPlayer {
 
 	// private int checkpointsFound = 0;
 
-	public long getStartTime() {
+	public long getStartTime ( ) {
 		return startTime;
 	}
 
-	public void setStartTime(long startTime) {
+	public void setStartTime ( long startTime ) {
 		this.startTime = startTime;
 	}
 
-	public Player getPlayer() {
+	public Player getPlayer ( ) {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer ( Player player ) {
 		this.player = player;
 	}
 
@@ -34,17 +34,16 @@ public class ParkourPlayer {
 	// this.lastCheckpoint = lastCheckpoint;
 	// }
 
-	public int getDeaths() {
+	public int getDeaths ( ) {
 		return Deaths;
 	}
 
-	public void setDeaths(int deaths) {
+	public void setDeaths ( int deaths ) {
 		Deaths = deaths;
 	}
 
 	/*
 	 * public int getCheckpointsFound() { return checkpointsFound; }
-	 * 
 	 * public void setCheckpointsFound(int checkpointsFound) {
 	 * this.checkpointsFound = checkpointsFound; }
 	 */

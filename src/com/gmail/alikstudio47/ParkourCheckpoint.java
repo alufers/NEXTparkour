@@ -6,7 +6,7 @@ import org.bukkit.Location;
 
 public class ParkourCheckpoint implements Serializable {
 	private static final long serialVersionUID = 1L;
-	Location location;
+	private Location location;
 
 	public ParkourCheckpoint( Location location ) {
 		this.location = location;
