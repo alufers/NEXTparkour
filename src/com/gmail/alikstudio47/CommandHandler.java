@@ -30,6 +30,11 @@ public class CommandHandler {
 
 			Player player = (Player) sender;
 
+			if ( args.length <= 0 ) {
+				plugin.showHelp( sender );
+				return true;
+			}
+
 			if ( !player.hasPermission( "np.use" )
 					|| !player.hasPermission( "np." + args[ 0 ].toLowerCase( ) ) ) {
 				sender.sendMessage( RED
