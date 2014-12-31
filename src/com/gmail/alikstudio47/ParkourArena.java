@@ -263,4 +263,9 @@ public class ParkourArena implements Serializable {
 		player.teleport(getSpawnLocation());
 		
 	}
+
+	public void clearScores() {
+		scores = new ArrayList<ParkourScore>();
+		
+	}
 }

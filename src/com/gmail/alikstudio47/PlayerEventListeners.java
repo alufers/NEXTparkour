@@ -57,19 +57,21 @@ public class PlayerEventListeners implements Listener {
 		Material matDown = event.getPlayer().getLocation().getBlock()
 				.getRelative(BlockFace.DOWN).getType();
 		/*Material mat = event.getPlayer().getLocation().getBlock().getType();*/
-		if (matDown == Material.DIAMOND_BLOCK || matDown == Material.GOLD_BLOCK) {
+		if (matDown == Material.DIAMOND_BLOCK || matDown == Material.NETHERRACK) {
 			ParkourArena tmp = plugin.findPlayer(player);
 
 			if (tmp != null) {
 
-				if (matDown == Material.DIAMOND_BLOCK) {
-					tmp.endReached(player.getPlayerListName());
-				} 
-				
 				if (matDown == Material.NETHERRACK) {
 					player.sendMessage(ChatColor.RED + "Game over!");
 					tmp.restart(player);
 				}
+				
+				if (matDown == Material.DIAMOND_BLOCK) {
+					tmp.endReached(player.getPlayerListName());
+				} 
+				
+				
 
 			}
 		}

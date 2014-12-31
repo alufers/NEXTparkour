@@ -102,7 +102,7 @@ public class CommandHandler {
 				}
 				if (args.length > 0) {
 					// subcommands
-					ParkourArena arenaToSetSpawn;
+					ParkourArena tmpArena;
 					if (args[0].equalsIgnoreCase("help"))
 						plugin.showAdminHelp(sender);
 					else if (args[0].equalsIgnoreCase("create"))
@@ -125,12 +125,37 @@ public class CommandHandler {
 									+ "Niewlasciwa ilosc parametrow.");
 					else if (args[0].equalsIgnoreCase("setarenaspawn"))
 						if (args.length == 2) {
-							arenaToSetSpawn = plugin.findArena(args[1]);
-							arenaToSetSpawn.setSpawnLocation(player
+							if(plugin.findArena(args[1]) == null)
+							{
+								
+								sender.sendMessage(RED
+										+ "Arena nie istnieje.");
+								return true;
+							}
+							tmpArena = plugin.findArena(args[1]);
+							tmpArena.setSpawnLocation(player
 									.getLocation());
 							plugin.saveArenas();
 							sender.sendMessage(GREEN
-									+ "Ustawiono nowy spawn.");
+									+ "Ustawiono nowy spawn n arenie.");
+						} else
+							sender.sendMessage(RED
+									+ "Niewlasciwa ilosc parametrow.");
+					else if (args[0].equalsIgnoreCase("clearscores"))
+						if (args.length == 2) {
+							if(plugin.findArena(args[1]) == null)
+							{
+								
+								sender.sendMessage(RED
+										+ "Arena nie istnieje.");
+								return true;
+							}
+							tmpArena = plugin.findArena(args[1]);
+							tmpArena.clearScores();
+							plugin.saveArenas();
+							sender.sendMessage(GREEN
+									+ "Wyczyszczono wyniki.");
+							plugin.saveArenas();
 						} else
 							sender.sendMessage(RED
 									+ "Niewlasciwa ilosc parametrow.");
