@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -144,7 +145,21 @@ public class ParkourArena implements Serializable {
 	public void endReached ( Player player ) {
 		endReached( player.getPlayerListName( ) );
 	}
-
+	public ParkourScore getArenaBest()
+	{
+		ParkourScore currentBest = null;
+		for(int i = 0; i < scores.size(); i++)
+		{
+			if(currentBest == null || scores.get(i).time < currentBest.time)
+			{
+				
+				currentBest = scores.get(i);
+			}
+			
+		}
+		return currentBest;
+		
+	}
 	public void endReached ( String _player ) {
 		ParkourPlayer player = getPkPlayerByName( _player );
 
@@ -152,24 +167,50 @@ public class ParkourArena implements Serializable {
 			player.player.sendMessage( GOLD + "Dzieki za granie na "
 					+ getName( ) );
 
-			float time = (float) ( ( System.currentTimeMillis( ) - player.startTime ) / 1000 );
-
+			float time =  System.currentTimeMillis( ) - player.startTime  ; // JUZ NIC NIE RUSZAC Z CZASEM
+			time = time / 1000;
+			float lastArenaBest;
+			if( getArenaBest()!=null)
+			{
+				lastArenaBest = getArenaBest().time; //to musi byc tutaj, dlatego ze jak on pobije rekord to arenaBest sie zmieni
+			}
+			else
+			{
+				lastArenaBest = -1;
+				
+			}
 			if ( getScoreOf( _player ) != null ) {
 				if(time < getScoreOf( _player ).time)
 				{
 					getScoreOf( _player ).time = time;
-					player.player.sendMessage( BOLD + "Pobiles swoj rekord!");
+					player.player.sendMessage( BOLD + "Pobiles swoj osobisty rekord!");
 				}
 				getScoreOf( _player ).timesPlayed += 1;
 			} else {
 				scores.add( new ParkourScore( _player, time ) );
 			}
-
-			player.player.sendMessage( niceEndMsg( getScoreOf( _player ) ) );
+			player.player.sendMessage( BOLD + "Jestem przed; TIME = " + lastArenaBest);
+			if(lastArenaBest == - 1 || time < lastArenaBest)
+			{
+				player.player.sendMessage( BOLD + "Juz prawie!");
+				if(lastArenaBest == -1)
+				{
+					
+					plugin.getServer().broadcastMessage(GREEN + "[Parkour]" + GRAY + "Gracz "+BOLD+ _player + GRAY + " ukonczyl jako pierwszy parkour " + BOLD + getName() + GRAY + ".");
+				}
+				else
+				{
+					player.player.sendMessage( BOLD + "FY!");
+					plugin.getServer().broadcastMessage(GREEN + "[Parkour]" + GRAY + "Gracz "+BOLD+ _player + GRAY + " pobil czas parkourze " + BOLD + getName() + GRAY + ". Jego wynik to " +BOLD + RED + time + "s" + GREEN + "(+" + (time - lastArenaBest) + ")");
+					
+				}
+			}
+			player.player.sendMessage( niceEndMsg( getScoreOf( _player ), time ) );
 
 			players.remove( player ); // gracz musi byc usuniety bo bugi :D
-
+			
 			player.player.teleport( plugin.getLobbySpawnLocation( ) );
+			plugin.saveArenas();
 		}
 
 	}
@@ -186,10 +227,10 @@ public class ParkourArena implements Serializable {
 
 	}
 
-	private String niceEndMsg ( ParkourScore score ) {
+	private String niceEndMsg ( ParkourScore score, float currentTime ) {
 		
 
 		return GOLD + "»   " + GRAY + "Parkour " + DARK_GREEN + BOLD + name
-				+ GRAY + " ukonczony z czasem: " + WHITE + score.time + GRAY + "s.";
+				+ GRAY + " ukonczony z czasem: " + WHITE + currentTime + GRAY + "s.";
 	}
 }
