@@ -27,6 +27,7 @@ public class ParkourArena implements Serializable {
 	private transient NEXTparkour plugin;
 	private boolean isActive;
 	private double x, y, z;
+	private float pitch, yaw;
 	private String world;
 	private List<ParkourScore> scores = new ArrayList<ParkourScore>();
 
@@ -35,6 +36,8 @@ public class ParkourArena implements Serializable {
 		y = loc.getY();
 		z = loc.getZ();
 		world = loc.getWorld().getName();
+		pitch = loc.getPitch();
+		yaw = loc.getYaw();
 	}
 
 	public void resetPlayers() {
@@ -45,7 +48,7 @@ public class ParkourArena implements Serializable {
 		World w = Bukkit.getWorld(world);
 		if (w == null)
 			return null;
-		Location toRet = new Location(w, x, y, z);
+		Location toRet = new Location(w, x, y, z, yaw, pitch);
 		return toRet;
 	}
 
@@ -206,7 +209,7 @@ public class ParkourArena implements Serializable {
 				scores.add(new ParkourScore(_player, time));
 			}
 			if (lastArenaBest == -1 || time < lastArenaBest) {
-				player.player.sendMessage(BOLD + "Juz prawie!");
+				
 				if (lastArenaBest == -1) {
 
 					plugin.getServer().broadcastMessage(
@@ -215,7 +218,7 @@ public class ParkourArena implements Serializable {
 									+ " ukonczyl jako pierwszy parkour " + GOLD
 									+ BOLD + getName() + RESET + GRAY + ".");
 				} else {
-					player.player.sendMessage(BOLD + "FY!");
+					
 					plugin.getServer().broadcastMessage(
 							GREEN + "[Parkour]" + GRAY + "Gracz " + GOLD + BOLD
 									+ _player + RESET + GRAY
@@ -253,5 +256,11 @@ public class ParkourArena implements Serializable {
 		return GOLD + "»   " + GRAY + "Parkour " + DARK_GREEN + BOLD + name
 				+ GRAY + " ukonczony z czasem: " + WHITE + currentTime + GRAY
 				+ "s.";
+	}
+
+	public void restart(Player player) {
+		this.getPkPlayerByName(player.getPlayerListName()).startTime = System.currentTimeMillis();
+		player.teleport(getSpawnLocation());
+		
 	}
 }
