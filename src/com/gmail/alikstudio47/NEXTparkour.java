@@ -241,6 +241,8 @@ public class NEXTparkour extends JavaPlugin implements Listener {
 		player.sendMessage(DARK_GREEN
 				+ "/npa setarenaspawn <nazwaAreny>                                            "
 				+ GREEN + "Ustawia spawn areny w miejscu, w ktorym stoisz.");
+		player.sendMessage(DARK_GREEN +"/npa setarenadeathblock <nazwaAreny> <nazwa_bloku>                                           "
+				+ GREEN + "Ustawia blok smierci (po wejsciu restart parkoura). Nazwa MUSI byc po angielsku.");
 
 	}
 
