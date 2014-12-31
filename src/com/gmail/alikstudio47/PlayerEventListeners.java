@@ -51,11 +51,10 @@ public class PlayerEventListeners implements Listener {
 			ParkourArena tmp = plugin.findPlayer( player );
 
 			if ( tmp != null ) {
-				player.sendMessage( "Wyciagam portfel" );
+				
 
 				if ( mat == Material.DIAMOND_BLOCK ) {
-					tmp.endReached( player );
-					player.sendMessage( "Mam kase!" );
+					tmp.endReached( player.getPlayerListName() );
 				} else if ( mat == Material.GOLD_BLOCK ) {
 					tmp.registerCheckpoint( player );
 				}

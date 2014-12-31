@@ -125,7 +125,7 @@ public class ParkourArena implements Serializable {
 
 	public ParkourScore getScoreOf ( String player ) {
 		for ( ParkourScore s : scores ) {
-			if ( s.playerName.equalsIgnoreCase( player ) )
+			if ( s.playerName.equals( player ) )
 				return s;
 		}
 
@@ -155,7 +155,11 @@ public class ParkourArena implements Serializable {
 			float time = (float) ( ( System.currentTimeMillis( ) - player.startTime ) / 1000 );
 
 			if ( getScoreOf( _player ) != null ) {
-				getScoreOf( _player ).time = time;
+				if(time < getScoreOf( _player ).time)
+				{
+					getScoreOf( _player ).time = time;
+					player.player.sendMessage( BOLD + "Pobiles swoj rekord!");
+				}
 				getScoreOf( _player ).timesPlayed += 1;
 			} else {
 				scores.add( new ParkourScore( _player, time ) );
@@ -183,11 +187,9 @@ public class ParkourArena implements Serializable {
 	}
 
 	private String niceEndMsg ( ParkourScore score ) {
-		String time = ( ( score.time * 1000 ) + "" ).replace( ".0", "" );
-		String s = time.substring( 0, time.length( ) - 3 );
-		String ms = time.substring( time.length( ) - 3 );
+		
 
 		return GOLD + "»   " + GRAY + "Parkour " + DARK_GREEN + BOLD + name
-				+ GRAY + " ukonczony z czasem: " + WHITE + s + "s " + ms + "ms";
+				+ GRAY + " ukonczony z czasem: " + WHITE + score.time + GRAY + "s.";
 	}
 }
