@@ -8,6 +8,7 @@ import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.RESET;
 import static org.bukkit.ChatColor.WHITE;
 
 import java.io.Serializable;
@@ -22,97 +23,108 @@ import org.bukkit.entity.Player;
 
 public class ParkourArena implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private transient List< ParkourPlayer > players = new ArrayList< ParkourPlayer >( );
+	private transient List<ParkourPlayer> players = new ArrayList<ParkourPlayer>();
 	private transient NEXTparkour plugin;
 	private boolean isActive;
 	private double x, y, z;
 	private String world;
-	private List< ParkourScore > scores = new ArrayList< ParkourScore >( );
+	private List<ParkourScore> scores = new ArrayList<ParkourScore>();
 
-	public void setSpawnLocation ( Location loc ) {
-		x = loc.getX( );
-		y = loc.getY( );
-		z = loc.getZ( );
-		world = loc.getWorld( ).getName( );
+	public void setSpawnLocation(Location loc) {
+		x = loc.getX();
+		y = loc.getY();
+		z = loc.getZ();
+		world = loc.getWorld().getName();
 	}
 
-	public void resetPlayers ( ) {
-		players = new ArrayList< ParkourPlayer >( );
+	public void resetPlayers() {
+		players = new ArrayList<ParkourPlayer>();
 	}
 
-	public Location getSpawnLocation ( ) {
-		World w = Bukkit.getWorld( world );
-		if ( w == null )
+	public Location getSpawnLocation() {
+		World w = Bukkit.getWorld(world);
+		if (w == null)
 			return null;
-		Location toRet = new Location( w, x, y, z );
+		Location toRet = new Location(w, x, y, z);
 		return toRet;
 	}
 
-	public boolean isActive ( ) {
+	public boolean isActive() {
 		return isActive;
 	}
 
-	public void setActive ( boolean isActive ) {
+	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 
-	public ParkourArena( NEXTparkour plugin ) {
+	public ParkourArena(NEXTparkour plugin) {
 		this.plugin = plugin;
 	}
 
-	public void setPlugin ( NEXTparkour plugin ) {
+	public void setPlugin(NEXTparkour plugin) {
 		this.plugin = plugin;
 	}
 
-	public String getName ( ) {
+	public String getName() {
 		return name;
 	}
 
-	public void setName ( String name ) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
 	private String name;
 
-	public void addPlayer ( Player player ) {
-		if ( !isActive( ) ) {
-			player.sendMessage( RED + "Mapa nieaktywna lub w budowie!" );
+	public void addPlayer(Player player) {
+		if (!isActive()) {
+			player.sendMessage(RED + "Mapa nieaktywna lub w budowie!");
 			return;
 		}
-		if ( players.contains( player ) )
-			player.sendMessage( RED + "Juz grasz na tej mapie!" );
+		if (players.contains(player))
+			player.sendMessage(RED + "Juz grasz na tej mapie!");
 		else {
-			ParkourPlayer tmp = new ParkourPlayer( );
+			ParkourPlayer tmp = new ParkourPlayer();
 			tmp.player = player;
-			tmp.startTime = System.currentTimeMillis( );
-			players.add( tmp );
-			player.sendMessage( BLUE + "Witaj na mapie " + getName( ) );
+			tmp.startTime = System.currentTimeMillis();
+			players.add(tmp);
+			player.sendMessage(BLUE + "Witaj na mapie " + BOLD + getName()
+					+ RESET + BLUE + "!");
 
-			if ( getScoreOf( player ) != null ) {
-				player.sendMessage( GREEN + "Grasz juz "
-						+ getScoreOf( player ).timesPlayed + " raz "
+			if (getScoreOf(player) != null) {
+				player.sendMessage(GREEN + "Grasz juz "
+						+ getScoreOf(player).timesPlayed + " raz "
 						+ ", a twoj najlepszy czas to "
-						+ getScoreOf( player ).time + "." );
+						+ getScoreOf(player).time + ".");
 			} else {
-				player.sendMessage( BLUE
-						+ "Jeszcze nigdy nie doszedles do konca tej mapy. Powodzenia." );
+				player.sendMessage(GOLD
+						+ "Jeszcze nigdy nie doszedles do konca tej mapy. Powodzenia.");
 			}
+			if (getArenaBest() == null) {
+				player.sendMessage(AQUA
+						+ "Jeszcze nikt nie doszedl do konca tej mapy. Musisz byc pierwszy!");
 
-			player.teleport( getSpawnLocation( ) );
+			} else {
+				player.sendMessage(AQUA
+						+ "Najlepszy czas na tej mapie ma gracz " + BOLD
+						+ getArenaBest().playerName + RESET + AQUA
+						+ ", a jego czas to " + BOLD + getArenaBest().time
+						+ RESET + AQUA + ".");
+			}
+			player.teleport(getSpawnLocation());
 		}
 
 	}
 
-	public void removePlayer ( Player player ) {
-		players.remove( player );
+	public void removePlayer(Player player) {
+		players.remove(player);
 
-		player.sendMessage( BLUE + "Dzieki za granie na " + getName( ) );
-		player.teleport( plugin.getLobbySpawnLocation( ) );
+		player.sendMessage(BLUE + "Dzieki za granie na " + getName());
+		player.teleport(plugin.getLobbySpawnLocation());
 	}
 
-	public Boolean containsPlayer ( Player player ) {
-		for ( int i = 0; i < players.size( ); i++ ) {
-			if ( players.get( i ).player == player ) {
+	public Boolean containsPlayer(Player player) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).player == player) {
 				return true;
 
 			}
@@ -120,105 +132,114 @@ public class ParkourArena implements Serializable {
 		return false;
 	}
 
-	public ParkourScore getScoreOf ( Player player ) {
-		return getScoreOf( player.getPlayerListName( ) );
+	public ParkourScore getScoreOf(Player player) {
+		return getScoreOf(player.getPlayerListName());
 	}
 
-	public ParkourScore getScoreOf ( String player ) {
-		for ( ParkourScore s : scores ) {
-			if ( s.playerName.equals( player ) )
+	public ParkourScore getScoreOf(String player) {
+		for (ParkourScore s : scores) {
+			if (s.playerName.equals(player))
 				return s;
 		}
 
 		return null;
 	}
 
-	public ParkourPlayer getPkPlayerByName ( String name ) {
-		for ( int i = 0; i < players.size( ); i++ ) {
-			if ( players.get( i ).player.getPlayerListName( ) == name ) {
-				return players.get( i );
+	public ParkourPlayer getPkPlayerByName(String name) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).player.getPlayerListName() == name) {
+				return players.get(i);
 			}
 		}
 		return null;
 	}
 
-	public void endReached ( Player player ) {
-		endReached( player.getPlayerListName( ) );
+	public void endReached(Player player) {
+		endReached(player.getPlayerListName());
 	}
-	public ParkourScore getArenaBest()
-	{
+
+	public ParkourScore getArenaBest() {
 		ParkourScore currentBest = null;
-		for(int i = 0; i < scores.size(); i++)
-		{
-			if(currentBest == null || scores.get(i).time < currentBest.time)
-			{
-				
+		for (int i = 0; i < scores.size(); i++) {
+			if (currentBest == null || scores.get(i).time < currentBest.time) {
+
 				currentBest = scores.get(i);
 			}
-			
+
 		}
 		return currentBest;
-		
+
 	}
-	public void endReached ( String _player ) {
-		ParkourPlayer player = getPkPlayerByName( _player );
 
-		if ( player != null ) {
-			player.player.sendMessage( GOLD + "Dzieki za granie na "
-					+ getName( ) );
+	public void endReached(String _player) {
+		ParkourPlayer player = getPkPlayerByName(_player);
 
-			float time =  System.currentTimeMillis( ) - player.startTime  ; // JUZ NIC NIE RUSZAC Z CZASEM
+		if (player != null) {
+			player.player
+					.sendMessage(GOLD + "Dzieki za granie na " + getName());
+
+			float time = System.currentTimeMillis() - player.startTime; // JUZ
+																		// NIC
+																		// NIE
+																		// RUSZAC
+																		// Z
+																		// CZASEM
 			time = time / 1000;
 			float lastArenaBest;
-			if( getArenaBest()!=null)
-			{
-				lastArenaBest = getArenaBest().time; //to musi byc tutaj, dlatego ze jak on pobije rekord to arenaBest sie zmieni
-			}
-			else
-			{
-				lastArenaBest = -1;
-				
-			}
-			if ( getScoreOf( _player ) != null ) {
-				if(time < getScoreOf( _player ).time)
-				{
-					getScoreOf( _player ).time = time;
-					player.player.sendMessage( BOLD + "Pobiles swoj osobisty rekord!");
-				}
-				getScoreOf( _player ).timesPlayed += 1;
+			if (getArenaBest() != null) {
+				lastArenaBest = getArenaBest().time; // to musi byc tutaj,
+														// dlatego ze jak on
+														// pobije rekord to
+														// arenaBest sie zmieni
 			} else {
-				scores.add( new ParkourScore( _player, time ) );
-			}
-			player.player.sendMessage( BOLD + "Jestem przed; TIME = " + lastArenaBest);
-			if(lastArenaBest == - 1 || time < lastArenaBest)
-			{
-				player.player.sendMessage( BOLD + "Juz prawie!");
-				if(lastArenaBest == -1)
-				{
-					
-					plugin.getServer().broadcastMessage(GREEN + "[Parkour]" + GRAY + "Gracz "+BOLD+ _player + GRAY + " ukonczyl jako pierwszy parkour " + BOLD + getName() + GRAY + ".");
-				}
-				else
-				{
-					player.player.sendMessage( BOLD + "FY!");
-					plugin.getServer().broadcastMessage(GREEN + "[Parkour]" + GRAY + "Gracz "+BOLD+ _player + GRAY + " pobil czas parkourze " + BOLD + getName() + GRAY + ". Jego wynik to " +BOLD + RED + time + "s" + GREEN + "(+" + (time - lastArenaBest) + ")");
-					
-				}
-			}
-			player.player.sendMessage( niceEndMsg( getScoreOf( _player ), time ) );
+				lastArenaBest = -1;
 
-			players.remove( player ); // gracz musi byc usuniety bo bugi :D
-			
-			player.player.teleport( plugin.getLobbySpawnLocation( ) );
+			}
+			if (getScoreOf(_player) != null) {
+				if (time < getScoreOf(_player).time) {
+					getScoreOf(_player).time = time;
+					player.player.sendMessage(BOLD
+							+ "Pobiles swoj osobisty rekord!");
+				}
+				getScoreOf(_player).timesPlayed += 1;
+			} else {
+				scores.add(new ParkourScore(_player, time));
+			}
+			if (lastArenaBest == -1 || time < lastArenaBest) {
+				player.player.sendMessage(BOLD + "Juz prawie!");
+				if (lastArenaBest == -1) {
+
+					plugin.getServer().broadcastMessage(
+							GREEN + "[Parkour]" + GRAY + "Gracz " + GOLD + BOLD
+									+ _player + RESET + GRAY
+									+ " ukonczyl jako pierwszy parkour " + GOLD
+									+ BOLD + getName() + RESET + GRAY + ".");
+				} else {
+					player.player.sendMessage(BOLD + "FY!");
+					plugin.getServer().broadcastMessage(
+							GREEN + "[Parkour]" + GRAY + "Gracz " + GOLD + BOLD
+									+ _player + RESET + GRAY
+									+ " pobil czas parkourze " + GOLD + BOLD
+									+ getName() + RESET + GRAY
+									+ ". Jego wynik to " + BOLD + RED + time
+									+ "s");
+
+				}
+			}
+			player.player.sendMessage(niceEndMsg(getScoreOf(_player), time));
+
+			players.remove(player); // gracz musi byc usuniety bo bugi :D
+
+			player.player.teleport(plugin.getLobbySpawnLocation());
 			plugin.saveArenas();
 		}
 
 	}
 
-	public void registerCheckpoint ( Player player ) {
-		for ( int i = 0; i < players.size( ); i++ ) {
-			if ( players.get( i ).player.equals( player ) ) {
-				player.sendMessage( AQUA + "Zdobyles checkpoint!" );
+	public void registerCheckpoint(Player player) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).player.equals(player)) {
+				player.sendMessage(AQUA + "Zdobyles checkpoint!");
 				// players.get(i).setLastCheckpoint(
 				// new ParkourCheckpoint(player.getLocation()));
 			}
@@ -227,10 +248,10 @@ public class ParkourArena implements Serializable {
 
 	}
 
-	private String niceEndMsg ( ParkourScore score, float currentTime ) {
-		
+	private String niceEndMsg(ParkourScore score, float currentTime) {
 
 		return GOLD + "»   " + GRAY + "Parkour " + DARK_GREEN + BOLD + name
-				+ GRAY + " ukonczony z czasem: " + WHITE + currentTime + GRAY + "s.";
+				+ GRAY + " ukonczony z czasem: " + WHITE + currentTime + GRAY
+				+ "s.";
 	}
 }
