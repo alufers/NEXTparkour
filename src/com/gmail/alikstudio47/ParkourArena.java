@@ -18,6 +18,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -30,7 +31,7 @@ public class ParkourArena implements Serializable {
 	private float pitch, yaw;
 	private String world;
 	private List<ParkourScore> scores = new ArrayList<ParkourScore>();
-
+	private Material deathBlock = Material.NETHERRACK;
 	public void setSpawnLocation(Location loc) {
 		x = loc.getX();
 		y = loc.getY();
@@ -267,5 +268,13 @@ public class ParkourArena implements Serializable {
 	public void clearScores() {
 		scores = new ArrayList<ParkourScore>();
 		
+	}
+
+	public Material getDeathBlock() {
+		return deathBlock;
+	}
+
+	public void setDeathBlock(Material deathBlock) {
+		this.deathBlock = deathBlock;
 	}
 }

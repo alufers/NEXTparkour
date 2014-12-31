@@ -6,6 +6,7 @@ import static org.bukkit.ChatColor.RED;
 
 import java.io.File;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -125,36 +126,50 @@ public class CommandHandler {
 									+ "Niewlasciwa ilosc parametrow.");
 					else if (args[0].equalsIgnoreCase("setarenaspawn"))
 						if (args.length == 2) {
-							if(plugin.findArena(args[1]) == null)
-							{
-								
-								sender.sendMessage(RED
-										+ "Arena nie istnieje.");
+							if (plugin.findArena(args[1]) == null) {
+
+								sender.sendMessage(RED + "Arena nie istnieje.");
 								return true;
 							}
 							tmpArena = plugin.findArena(args[1]);
-							tmpArena.setSpawnLocation(player
-									.getLocation());
+							tmpArena.setSpawnLocation(player.getLocation());
 							plugin.saveArenas();
 							sender.sendMessage(GREEN
 									+ "Ustawiono nowy spawn n arenie.");
 						} else
 							sender.sendMessage(RED
 									+ "Niewlasciwa ilosc parametrow.");
+					else if (args[0].equalsIgnoreCase("setarenadeathblock"))
+						if (args.length == 3) {
+							if (plugin.findArena(args[1]) == null) {
+
+								sender.sendMessage(RED + "Arena nie istnieje.");
+								return true;
+							}
+							if (Material.getMaterial(args[2]) == null) {
+								sender.sendMessage(RED + "Nie ma takiego bloku.");
+								return true;
+							}
+							tmpArena = plugin.findArena(args[1]);
+							tmpArena.setDeathBlock(Material
+									.getMaterial(args[2]));
+							plugin.saveArenas();
+							sender.sendMessage(GREEN
+									+ "Ustawiono nowy blok smierci.");
+						} else
+							sender.sendMessage(RED
+									+ "Niewlasciwa ilosc parametrow.");
 					else if (args[0].equalsIgnoreCase("clearscores"))
 						if (args.length == 2) {
-							if(plugin.findArena(args[1]) == null)
-							{
-								
-								sender.sendMessage(RED
-										+ "Arena nie istnieje.");
+							if (plugin.findArena(args[1]) == null) {
+
+								sender.sendMessage(RED + "Arena nie istnieje.");
 								return true;
 							}
 							tmpArena = plugin.findArena(args[1]);
 							tmpArena.clearScores();
 							plugin.saveArenas();
-							sender.sendMessage(GREEN
-									+ "Wyczyszczono wyniki.");
+							sender.sendMessage(GREEN + "Wyczyszczono wyniki.");
 							plugin.saveArenas();
 						} else
 							sender.sendMessage(RED
