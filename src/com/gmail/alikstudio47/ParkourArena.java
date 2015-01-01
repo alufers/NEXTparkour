@@ -32,6 +32,7 @@ public class ParkourArena implements Serializable {
 	private String world;
 	private List<ParkourScore> scores = new ArrayList<ParkourScore>();
 	private Material deathBlock = Material.NETHERRACK;
+
 	public void setSpawnLocation(Location loc) {
 		x = loc.getX();
 		y = loc.getY();
@@ -119,8 +120,15 @@ public class ParkourArena implements Serializable {
 
 	}
 
+
+
 	public void removePlayer(Player player) {
-		players.remove(player);
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).player == player) {
+
+				players.remove(players.get(i));
+			}
+		}
 
 		player.sendMessage(BLUE + "Dzieki za granie na " + getName());
 		player.teleport(plugin.getLobbySpawnLocation());
@@ -210,7 +218,7 @@ public class ParkourArena implements Serializable {
 				scores.add(new ParkourScore(_player, time));
 			}
 			if (lastArenaBest == -1 || time < lastArenaBest) {
-				
+
 				if (lastArenaBest == -1) {
 
 					plugin.getServer().broadcastMessage(
@@ -219,7 +227,7 @@ public class ParkourArena implements Serializable {
 									+ " ukonczyl jako pierwszy parkour " + GOLD
 									+ BOLD + getName() + RESET + GRAY + ".");
 				} else {
-					
+
 					plugin.getServer().broadcastMessage(
 							GREEN + "[Parkour]" + GRAY + "Gracz " + GOLD + BOLD
 									+ _player + RESET + GRAY
@@ -260,14 +268,15 @@ public class ParkourArena implements Serializable {
 	}
 
 	public void restart(Player player) {
-		this.getPkPlayerByName(player.getPlayerListName()).startTime = System.currentTimeMillis();
+		this.getPkPlayerByName(player.getPlayerListName()).startTime = System
+				.currentTimeMillis();
 		player.teleport(getSpawnLocation());
-		
+
 	}
 
 	public void clearScores() {
 		scores = new ArrayList<ParkourScore>();
-		
+
 	}
 
 	public Material getDeathBlock() {

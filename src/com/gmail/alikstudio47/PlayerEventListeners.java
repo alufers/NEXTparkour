@@ -14,9 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerEventListeners implements Listener {
 	private NEXTparkour plugin;
@@ -24,7 +27,15 @@ public class PlayerEventListeners implements Listener {
 	public PlayerEventListeners(NEXTparkour plugin) {
 		this.plugin = plugin;
 	}
-
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		Player player = event.getEntity();
+		if (plugin.findPlayer(player) != null) {
+			plugin.findPlayer(player).restart(player);
+			
+			
+		}
+	}
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Action action = event.getAction();
@@ -51,16 +62,35 @@ public class PlayerEventListeners implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		if (plugin.findPlayer(player) != null) {
+			plugin.findPlayer(player).removePlayer(player);
+			
+		}
+
+	
+	}
+
+	/*@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		
+
+		
+	}*/
+
+	@EventHandler
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
 
 		if (plugin.findPlayer(player) != null) {
 			String command = event.getMessage().split(" ")[0].toLowerCase();
 
-			if (!(command.equals("/np")|| command.equals("/npa") )) {
+			if (!(command.equals("/np") || command.equals("/npa"))) {
 				event.setCancelled(true);
-				player.sendMessage(ChatColor.RED + "Ta komenda jest zabroniona w czasie gry.");
+				player.sendMessage(ChatColor.RED
+						+ "Ta komenda jest zabroniona w czasie gry.");
 			}
 		}
 	}
