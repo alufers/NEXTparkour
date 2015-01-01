@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -49,31 +50,42 @@ public class PlayerEventListeners implements Listener {
 		}
 	}
 
-	
+	@EventHandler
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		
+
+		if (plugin.findPlayer(player) != null) {
+			String command = event.getMessage().split(" ")[0].toLowerCase();
+
+			if (!(command.equals("/np")|| command.equals("/npa") )) {
+				event.setCancelled(true);
+				player.sendMessage(ChatColor.RED + "Ta komenda jest zabroniona w czasie gry.");
+			}
+		}
+	}
 
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		Material matDown = event.getPlayer().getLocation().getBlock()
 				.getRelative(BlockFace.DOWN).getType();
-		/*Material mat = event.getPlayer().getLocation().getBlock().getType();*/
-		
-			ParkourArena tmp = plugin.findPlayer(player);
+		/* Material mat = event.getPlayer().getLocation().getBlock().getType(); */
 
-			if (tmp != null) {
+		ParkourArena tmp = plugin.findPlayer(player);
 
-				if (matDown == tmp.getDeathBlock()) {
-					player.sendMessage(ChatColor.RED + "Game over!");
-					tmp.restart(player);
-				}
-				
-				if (matDown == Material.DIAMOND_BLOCK) {
-					tmp.endReached(player.getPlayerListName());
-				} 
-				
-				
+		if (tmp != null) {
 
+			if (matDown == tmp.getDeathBlock()) {
+				player.sendMessage(ChatColor.RED + "Game over!");
+				tmp.restart(player);
 			}
-		
+
+			if (matDown == Material.DIAMOND_BLOCK) {
+				tmp.endReached(player.getPlayerListName());
+			}
+
+		}
+
 	}
 }
