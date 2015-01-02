@@ -135,7 +135,7 @@ public class CommandHandler {
 							tmpArena.setSpawnLocation(player.getLocation());
 							plugin.saveArenas();
 							sender.sendMessage(GREEN
-									+ "Ustawiono nowy spawn n arenie.");
+									+ "Ustawiono nowy spawn na arenie.");
 						} else
 							sender.sendMessage(RED
 									+ "Niewlasciwa ilosc parametrow.");
